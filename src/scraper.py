@@ -13,16 +13,23 @@ from dateutil import parser
 user_agent = UserAgent()
 headers = {"User-Agent": user_agent.random}
 
-def count_pages(number_of_items: Union[int,float], keyword=None )-> int:  
+def count_pages(number_of_items: Union[int,float], keyword=None )-> int: 
+    ''' 
+    Finds the number of pages   that should be scrapped to get the number of items from the website
+    Returns the number of pages that should be scrapped to get the number of items
+    ''' 
+    
     if number_of_items> find_max_item(keyword):
         no_of_pages = math.ceil(find_max_item(keyword) / 30)
     no_of_pages = math.ceil(abs(number_of_items) / 30)
     return no_of_pages
 
 def find_max_item(keyword: str):
-    '''Finds the maximal number of records  that can be scraped given the arguments for a particular keyword 
+    '''
+    Finds the maximal number of records  that can be scraped given the arguments for a particular keyword 
     Returns the  max number of items of the category  that can be scrapped from the website
     '''
+    
     url = f"https://www.bookdepository.com/search?searchTerm={keyword}&page=1"
     page = requests.get (url, headers =headers)
     soup = BeautifulSoup(page.content, "html.parser")
@@ -31,7 +38,8 @@ def find_max_item(keyword: str):
     return max_item
 
 def generate_urls(keyword:str, number_of_items:int)-> list:
-    """ """
+    """Generates urls for for all the pages to be scraped given
+    Returns a list of urls"""
     urls = []
     if  number_of_items >= find_max_item(keyword):
         number_of_pages = count_pages(find_max_item(keyword))
@@ -46,7 +54,9 @@ def generate_urls(keyword:str, number_of_items:int)-> list:
             urls.append(url)
     return urls   
    
-def extract(url):
+def extract(url:str)->dict:
+    '''Extracts necessary fields from the web page
+        Returns dictionary containing scrapped fields '''
     page = requests.get(url, headers=headers)
     soup = BeautifulSoup(page.content, "html.parser")
     book_items = soup.find_all("div", class_="book-item")
@@ -85,7 +95,9 @@ def extract(url):
     return  dict_of_scrapped_items
 
 
-def transform(df):
+def transform(df:pd.DataFrame)->pd.DataFrame:
+    '''Cleans price and published date coulmns 
+    Returns cleaned dataframe'''
     try:
         df['book_price'] = df['book_price'].apply(lambda x :re.sub("[^0-9 ,.]", "",x).replace(",", "."))
         df['Published_date'] = df['Published_date'].apply(lambda x: parser.parse(x) )
