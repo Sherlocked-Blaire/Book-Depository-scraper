@@ -1,8 +1,8 @@
- 
 import psycopg2
 import pandas as pd
 import csv
 from sqlalchemy import create_engine, types
+
 class DatabaseError(psycopg2.Error):
     pass
 class DatabaseConnector():
@@ -17,11 +17,11 @@ class DatabaseConnector():
         """
         try:
             self.__connection = psycopg2.connect(
-                host="ec2-79-125-30-28.eu-west-1.compute.amazonaws.com",
-                user="uxqtimqdzddpcq",
-                port="5432",
-                database="d6coulm169a0sf",
-                password="ec463706ffd1e095dc7639ab562cb1d783e3c8c8d9bb6f0227b9f286384a7ace"
+                host="host",
+                user="username",
+                port="port",
+                database="databasename",
+                password="password"
             )
             self.__connection.autocommit = True
             self.__cursor = self.__connection.cursor()
