@@ -11,7 +11,7 @@ This is a web scrapping project that scrapes from an online book store book (dep
     - item url
 
     - date of publication
-    ```
+```
 
 The project contains the:
 
@@ -28,6 +28,7 @@ pip install request
 pip install sqlalchemy
 
 pip install psycopg2
+
 ```
 
 
