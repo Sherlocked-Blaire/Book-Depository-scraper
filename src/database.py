@@ -103,6 +103,23 @@ class DatabaseConnector():
             raise DatabaseError("Could not add value to  tables in the specified database")    
         
         self.__connection.commit()
+        
+        
+    def join_and_export():
+           """
+        Execute query, fetch all the records and export it to csv file.
+        Returns csv file containing all the records in the database
+        """
+    cur = self.connect_database() 
+
+    cur.execute(
+            """select categories.category, booksdepo.book_title, booksdepo.book_price, booksdepo.book_url, booksdepo.image_url  booksdepo.Published_date 
+            FROM booksdepo 
+            LEFT JOIN categories on booksdepo.category = categories.category"""
+        )
+
+    df = pd.DataFrame(cur.fetchall())
+    df.to_csv('data.csv')    
 if __name__ == '__main__':
     db = DatabaseConnector()
     db.connect_database()
