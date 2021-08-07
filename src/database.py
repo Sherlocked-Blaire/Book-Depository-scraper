@@ -13,7 +13,7 @@ class DatabaseConnector():
     def connect_database(self):
         """
         creates a connection to the postgres database.
-        :return: connection cursor
+        Returns the  connection cursor
         """
         try:
             self.__connection = psycopg2.connect(
@@ -33,7 +33,7 @@ class DatabaseConnector():
     def create_tables(self):
         """
         Create tables and insert dataframe in database.
-        :return: None
+        Returns None
         """
 
         cur = self.connect_database()
@@ -63,7 +63,7 @@ class DatabaseConnector():
     def delete_tables(self):
         """
         deletes Listing and Categories tables from the database
-        :return: Tables successfully deleted message
+        Returns Tables successfully deleted message
         """
         cur = self.connect_database()
         try:
@@ -77,17 +77,17 @@ class DatabaseConnector():
     def insert_into_tables(self,path):
         """
         inserts Listing and Categories tables from the database
-        :return: Tables successfully inserted message
+        Returns Tables successfully inserted message
         """
         try:
             cur = self.connect_database()  
             df = pd.read_csv(path)
             data = df.to_records(index=False)
-            host="ec2-79-125-30-28.eu-west-1.compute.amazonaws.com"
-            user="uxqtimqdzddpcq"
-            port="5432"
-            database="d6coulm169a0sf"
-            password="ec463706ffd1e095dc7639ab562cb1d783e3c8c8d9bb6f0227b9f286384a7ace"
+            host="host"
+            user="user"
+            port="portr"
+            database="database"
+            password="password"
             postgres_str = f'postgresql://{user}:{password}@{host}:{port}/{database}'
     
             engine = create_engine(postgres_str, echo=False)
@@ -106,6 +106,6 @@ class DatabaseConnector():
 if __name__ == '__main__':
     db = DatabaseConnector()
     db.connect_database()
-    db.create_tables()
+    #db.create_tables()
     path = str(input("Enter the path to the csv:\n"))
     db.insert_into_tables(path)
